@@ -772,6 +772,9 @@ sub post_as_json {
             local $ENV{HTTP_PROXY}  = $self->{lwp}->proxy('http');
             local $ENV{HTTPS_PROXY} = $self->{lwp}->proxy('https');
 
+            local $ENV{LD_LIBRARY_PATH} = $ENV{LD_LIBRARY_PATH_YOUTUBEVIEWER};
+            local $ENV{PERL5LIB} = $ENV{PERL5LIB_YOUTUBEVIEWER};
+
                 $name eq 'exec'   ? exec(@args)
               : $name eq 'system' ? system(@args)
               : $name eq 'stdout' ? qx(@args)
