@@ -138,6 +138,13 @@ sub which_command {
     return;
 }
 
+sub get_locale_lang_code
+{
+	my $code = $ENV{LANGUAGE} || (($ENV{LANG} =~ /^([^\.]+)/)[0]);
+	if($_[0] eq 'short'){ $code =~ s/_.*//; }
+	return $code;
+}
+
 my %symbols = (
                up_arrow    => '↑',
                down_arrow  => '↓',
@@ -192,7 +199,7 @@ my %CONFIG = (
                                    arg => q{-close-at-end -media-title *TITLE* *URL*},
                                   },
                      },
-    video_player_selected => undef,    # autodetect it later
+    video_player_selected => "vlc",
 
     # GUI options
     clean_text_entries_on_click => 1,
@@ -200,11 +207,11 @@ my %CONFIG = (
     clear_search_list           => 1,
     default_notebook_page       => 1,
     mainw_size                  => '700x400',
-    mainw_maximized             => 0,
+    mainw_maximized             => 1,
     mainw_fullscreen            => 0,
     mainw_centered              => 0,
     hpaned_width                => 250,
-    hpaned_position             => 420,
+    hpaned_position             => 720,
 
     # Youtube options
     dash_support    => 1,
@@ -218,7 +225,7 @@ my %CONFIG = (
     videoSyndicated => undef,
     publishedBefore => undef,
     publishedAfter  => undef,
-    hl              => 'en_US',
+    hl              => get_locale_lang_code('long') || 'en_US',
     regionCode      => undef,
 
     # URI options
@@ -229,7 +236,7 @@ my %CONFIG = (
     youtube_channel_url  => 'https://www.youtube.com/channel/%s',
 
     # Subtitle options
-    srt_languages => ['en', 'es'],
+    srt_languages => [get_locale_lang_code('short'), 'en'],
     captions_dir  => tmpdir(),
     get_captions  => 1,
     auto_captions => 0,
@@ -257,8 +264,8 @@ my %CONFIG = (
     history                => 1,
     history_limit          => 10_000,
     history_file           => $history_file,
-    save_titles_to_history => 0,
-    entry_completion_limit => 10,
+    save_titles_to_history => 1,
+    entry_completion_limit => 25,
 );
 
 {
