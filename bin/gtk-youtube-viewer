@@ -2727,6 +2727,13 @@ sub play_video {
 
     my $command = get_player_command($streaming, $video);
 
+    if (open(my $history_played_fh, '>>:utf8', catfile($config_dir, "played.txt"))) {
+    	say {$history_played_fh} $video_id . "\t" . $yv_utils->get_title($video);
+	}
+    else {
+        warn "[!] Can't open played videos history file for appending: $!";
+    }
+
     if ($yv_obj->get_debug) {
         say "-> Resolution: $streaming->{resolution}";
         say "-> Video itag: $streaming->{streaming}{itag}";
