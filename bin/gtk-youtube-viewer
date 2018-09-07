@@ -2957,8 +2957,16 @@ sub comments_row_activated {
             die "This is the last page of comments.\n";
         }
     }
+    else {
+		set_text($gui->get_object('comment_textview'), '@' . $feeds_liststore->get($iter, 2) . ', ');
+    }
 
     return 1;
+}
+
+sub clear_comment_to_video {
+	set_text($gui->get_object('comment_textview'), '');
+	1;
 }
 
 sub show_user_favorited_videos {
@@ -2988,11 +2996,16 @@ sub show_related_videos {
 sub send_comment_to_video {
     my $videoID = get_selected_entry_code(type => 'video') // return;
     my $comment = get_text($gui->get_object('comment_textview'));
+    my $status;
 
-    $feeds_statusbar->push(0,
-                           length($comment) && $yv_obj->comment_to_video_id($comment, $videoID)
-                           ? 'Video comment has been posted!'
-                           : 'Error!');
+	if (length($comment) && $yv_obj->comment_to_video_id($comment, $videoID))
+	{
+		$status = 'Video comment has been posted!';
+		set_text($gui->get_object('comment_textview'), '');
+	} else {
+		$status = 'Error!';
+	}
+    $feeds_statusbar->push(0, $status);
 }
 
 sub display_comments {
@@ -3015,6 +3028,11 @@ sub display_comments {
                                 . $yv_utils->format_date($snippet->{publishedAt})
                                 . ") said:</big>\n\t"
                                 . encode_entities($snippet->{textDisplay} // 'Empty comment...')
+                             );
+        $feeds_liststore->set(
+                              $iter,
+                              2,
+                              $snippet->{authorDisplayName}
                              );
     }
 
