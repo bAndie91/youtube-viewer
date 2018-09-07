@@ -28,7 +28,7 @@
     <property name="icon_name">emblem-downloads</property>
   </object>
   <object class="GtkEntryBuffer" id="entrybuffer1">
-    <property name="text" translatable="yes">Search for YouTube videos...</property>
+    <property name="text" translatable="yes"></property>
     <signal name="deleted-text" handler="analyze_text" swapped="no"/>
     <signal name="inserted-text" handler="analyze_text" swapped="no"/>
   </object>
@@ -1260,7 +1260,7 @@ Recommended: 10</property>
                                                             <property name="tooltip_text" translatable="yes">Search in videos uploaded by a specific author.
 Unless the author name is valid, this field is ignored.</property>
                                                             <property name="invisible_char">•</property>
-                                                            <property name="text" translatable="yes">Insert a valid author name...</property>
+                                                            <property name="text" translatable="yes"></property>
                                                             <property name="invisible_char_set">True</property>
                                                             <property name="caps_lock_warning">False</property>
                                                             <property name="primary_icon_activatable">False</property>
@@ -1306,7 +1306,7 @@ Unless the author name is valid, this field is ignored.</property>
                                                             <property name="tooltip_text" translatable="yes">Search in videos uploaded in a specific category.
 Unless the categoryID is valid, this field is ignored.</property>
                                                             <property name="invisible_char">•</property>
-                                                            <property name="text" translatable="yes">Insert a valid category ID...</property>
+                                                            <property name="text" translatable="yes"></property>
                                                             <property name="primary_icon_activatable">False</property>
                                                             <property name="secondary_icon_activatable">False</property>
                                                             <property name="primary_icon_sensitive">True</property>

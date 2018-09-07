@@ -211,7 +211,7 @@ my %CONFIG = (
     video_player_selected => "vlc",
 
     # GUI options
-    clean_text_entries_on_click => 1,
+    clean_text_entries_on_click => 0,
     show_thumbs                 => 1,
     clear_search_list           => 1,
     default_notebook_page       => 1,
