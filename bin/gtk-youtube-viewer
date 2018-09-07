@@ -49,6 +49,7 @@ binmode(STDOUT, ':utf8');
 my $appname  = 'GTK YouTube Viewer';
 my $version  = $WWW::YoutubeViewer::VERSION;
 my $execname = 'gtk-youtube-viewer';
+my $appxdgname = 'youtube-viewer';
 
 # Share directory
 my $share_dir = $DEVEL ? '../share' : dist_dir('WWW-YoutubeViewer');
@@ -83,19 +84,27 @@ else {
     $xdg_config_home = catdir($home_dir, '.config');
 }
 
+my $xdg_data_home = $ENV{XDG_DATA_HOME} || catdir($home_dir, '.local', 'share');
+
+my $xdg_cache_home = $ENV{XDG_CACHE_HOME} || catdir($home_dir, '.cache');
+
 # Configuration dir/file
-my $config_dir = catdir($xdg_config_home, 'youtube-viewer');
+my $config_dir = catdir($xdg_config_home, $appxdgname);
+my $xdgcache_dir = catdir($xdg_cache_home, $appxdgname);
+my $xdgdata_dir = catdir($xdg_data_home, $appxdgname);
+
 my $config_file         = catfile($config_dir, "$execname.conf");
 my $youtube_users_file  = catfile($config_dir, 'youtube_users.txt');
-my $history_file        = catfile($config_dir, 'history.txt');
-my $authentication_file = catfile($config_dir, 'reg.dat');
+my $history_file        = catfile($xdgdata_dir, 'search-history.txt');
+my $history_view_file   = catfile($xdgdata_dir, 'view-history.txt');
+my $authentication_file = catfile($xdgcache_dir, 'reg.dat');
 
 # Create the configuration directory
-foreach my $dir ($config_dir) {
+foreach my $dir ($config_dir, $xdgcache_dir, $xdgdata_dir) {
     if (not -d $dir) {
         require File::Path;
         File::Path::make_path($dir)
-          or warn "[!] Can't create the configuration directory `$dir': $!";
+          or warn "[!] Can't create directory `$dir': $!";
     }
 }
 
@@ -2727,11 +2736,11 @@ sub play_video {
 
     my $command = get_player_command($streaming, $video);
 
-    if (open(my $history_played_fh, '>>:utf8', catfile($config_dir, "played.txt"))) {
-    	say {$history_played_fh} $video_id . "\t" . $yv_utils->get_title($video);
+    if (open(my $history_played_fh, '>>:utf8', $history_view_file)) {
+        say {$history_played_fh} $video_id . "\t" . $yv_utils->get_title($video);
 	}
     else {
-        warn "[!] Can't open played videos history file for appending: $!";
+        warn "[!] Can't open played videos history file '$history_view_file' for appending: $!";
     }
 
     if ($yv_obj->get_debug) {
