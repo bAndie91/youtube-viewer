@@ -3045,6 +3045,24 @@ sub display_comments {
     return 1;
 }
 
+sub display_last_viewed_videos
+{
+	# Display last played videos
+	$liststore->clear if $CONFIG{clear_search_list};
+	
+	my @last_played_id;
+	if (open(my $fh, '<', $history_view_file))
+	{
+		while(<$fh>) {
+			shift @last_played_id if scalar @last_played_id > $CONFIG{maxResults};
+			/^(\S+)/;
+			push @last_played_id, $1 unless grep {/^\Q$1\E/} @last_played_id;
+		}
+		display_results($yv_obj->_get_results($yv_obj->_make_videos_url(id => join ',', reverse @last_played_id)));
+		close $fh;
+	}
+}
+
 sub show_videos_from_selected_author {
     uploads('channel', get_channel_id_for_selected_video() || return);
 }
@@ -3119,5 +3137,12 @@ sub on_mainw_destroy {
 }
 
 $notebook->set_current_page($CONFIG{default_notebook_page});
+
+# Run startup routines.
+Glib::Idle->add(sub {
+	display_last_viewed_videos();
+	# timer uninstalls itself
+	return 0;
+}, priority=>Glib::G_PRIORITY_DEFAULT_IDLE);
 
 'Gtk2'->main;
