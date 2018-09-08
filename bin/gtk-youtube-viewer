@@ -2231,10 +2231,6 @@ sub encode_entities {
     return $text;
 }
 
-sub get_next_page_spaces {
-    $CONFIG{show_thumbs} ? "\t" x 10 : "\t" x 20;
-}
-
 sub get_code {
     my ($code, $iter) = get_selected_entry_code();
     $code // return;
@@ -2249,7 +2245,7 @@ sub get_code {
         my $results = $yv_obj->next_page($code, $next_page_token);
 
         if ($yv_utils->has_entries($results)) {
-            $liststore->set($iter, 0, get_next_page_spaces() . '<big><b>' . ('=' x 20) . '</b></big>');
+            $liststore->set($iter, 0, '<big><b>' . ('=' x 20) . '</b></big>');
             $liststore->set($iter, 3, q{});
         }
         else {
@@ -2278,7 +2274,7 @@ sub _append_next_page {
     $token // return;    # no next page is available
 
     my $iter = $liststore->append;
-    $liststore->set($iter, 0, get_next_page_spaces() . "<big><b>LOAD MORE</b></big>");
+    $liststore->set($iter, 0, "<big><b>LOAD MORE</b></big>");
     $liststore->set($iter, 3, $url);
     $liststore->set($iter, 5, $token);
     $liststore->set($iter, 7, 'next_page');
