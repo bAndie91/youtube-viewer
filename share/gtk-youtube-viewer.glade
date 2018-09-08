@@ -131,6 +131,11 @@
     <property name="can_focus">False</property>
     <property name="icon_name">edit-clear</property>
   </object>
+  <object class="GtkImage" id="icon-history">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">document-open-recent</property>
+  </object>
   <object class="GtkListStore" id="liststore1">
     <columns>
       <!-- column-name name -->
@@ -295,6 +300,29 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_mainw_destroy" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="main-menu-view">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">View</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="main-menu-view-menu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="last_viewed_videos">
+                        <property name="label" translatable="yes">Last viewed</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_stock">False</property>
+                        <property name="image">icon-history</property>
+                        <signal name="activate" handler="display_last_viewed_videos" swapped="no"/>
                       </object>
                     </child>
                   </object>
