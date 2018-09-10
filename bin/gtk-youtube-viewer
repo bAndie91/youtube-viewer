@@ -96,7 +96,7 @@ my $xdgdata_dir = catdir($xdg_data_home, $appxdgname);
 my $config_file         = catfile($config_dir, "$execname.conf");
 my $youtube_users_file  = catfile($config_dir, 'youtube_users.txt');
 my $history_file        = catfile($xdgdata_dir, 'search-history.txt');
-my $history_view_file   = catfile($xdgdata_dir, 'view-history.txt');
+my $history_watched_file   = catfile($xdgdata_dir, 'watch-history.txt');
 my $authentication_file = catfile($xdgcache_dir, 'reg.dat');
 
 # Create the configuration directory
@@ -755,6 +755,7 @@ my $ResultsHistory = {
 	current => -1,
 	results => [],
 };
+my %WatchedVideoHistory = ();
 
 # Locate youtube-viewer
 $CONFIG{youtube_viewer} //= which_command('youtube-viewer') // 'youtube-viewer';
@@ -2739,11 +2740,16 @@ sub play_video {
 
     my $command = get_player_command($streaming, $video);
 
-    if (open(my $history_played_fh, '>>:utf8', $history_view_file)) {
-        say {$history_played_fh} $video_id . "\t" . $yv_utils->get_title($video);
-	}
-    else {
-        warn "[!] Can't open played videos history file '$history_view_file' for appending: $!";
+	if(not exists $WatchedVideoHistory{$video_id})
+	{
+		$WatchedVideoHistory{$video_id} = 1;
+		
+	    if (open(my $history_watched_fh, '>>:utf8', $history_watched_file)) {
+    	    say {$history_watched_fh} $video_id . "\t" . $yv_utils->get_title($video);
+		}
+    	else {
+	        warn "[!] Can't open played videos history file '$history_watched_file' for appending: $!";
+    	}
     }
 
     if ($yv_obj->get_debug) {
@@ -3054,12 +3060,12 @@ sub display_last_viewed_videos
 	$liststore->clear if $CONFIG{clear_search_list};
 	
 	my @last_played_id;
-	if (open(my $fh, '<', $history_view_file))
+	if (open(my $fh, '<', $history_watched_file))
 	{
 		while(<$fh>) {
 			shift @last_played_id if scalar @last_played_id > $CONFIG{maxResults};
 			/^(\S+)/;
-			push @last_played_id, $1 unless grep {/^\Q$1\E/} @last_played_id;
+			push @last_played_id, $1 unless grep {$_ eq $1} @last_played_id;
 		}
 		display_results($yv_obj->_get_results($yv_obj->_make_videos_url(id => join ',', reverse @last_played_id)));
 		close $fh;
