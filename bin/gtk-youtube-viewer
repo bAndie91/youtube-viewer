@@ -166,7 +166,7 @@ my %symbols = (
                heart       => '❤',
                right_arrow => '→',
                crazy_arrow => '↬',
-               circle      => '∘',
+               numero      => '№',
               );
 
 # Main configuration
@@ -2555,7 +2555,7 @@ sub add_playlist_entry {
                    );
 
     $liststore->set($iter, 2, "<b>$symbols{diamond}</b>  " . 'Playlist' . "\n"
-                      . "<b>$symbols{circle}</b>  $playlist->{contentDetails}->{itemCount} items\n"
+                      . "<b>$symbols{numero}</b>  $playlist->{contentDetails}->{itemCount} items\n"
                    );
 
     if ($CONFIG{show_thumbs}) {
