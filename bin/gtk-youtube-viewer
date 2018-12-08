@@ -2000,6 +2000,9 @@ sub set_youtube_tops {
         $users_liststore->set($iter, 1, $channel_name);
         $users_liststore->set($iter, 2, 'channel');
         $users_liststore->set($iter, 3, $user_icon_pixbuf);
+        
+        # Save to file immediately
+        save_usernames_to_file();
     }
 
     sub add_user_to_favorites {
@@ -2013,6 +2016,7 @@ sub set_youtube_tops {
         my $channel_id = $users_liststore->get($iter, 0);
         delete $channels{$channel_id};
         $users_liststore->remove($iter);
+        save_usernames_to_file();
     }
 
     sub save_usernames_to_file {
@@ -3223,7 +3227,6 @@ sub on_mainw_destroy {
 
     get_main_window_size();
     dump_configuration();
-    save_usernames_to_file();
 
     'Gtk2'->main_quit;
 }
