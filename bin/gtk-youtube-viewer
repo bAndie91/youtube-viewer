@@ -1269,6 +1269,19 @@ sub menu_popup {
             $author->append($item);
         }
 
+        # Save channel (locally)
+        {
+            my $item = 'Gtk2::ImageMenuItem'->new("Save Channel");
+            $item->signal_connect(
+                activate => sub {
+                	save_channel_by_id($channel_id);
+                }
+            );
+            $item->set_image('Gtk2::Image'->new_from_icon_name("gtk-add", q{menu}));
+            $item->show;
+            $author->append($item);
+        }
+
         # Open the YouTube channel page
         {
             my $item = 'Gtk2::ImageMenuItem'->new("YouTube page");
