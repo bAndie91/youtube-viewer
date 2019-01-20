@@ -170,11 +170,13 @@
   </object>
   <object class="GtkListStore" id="liststore11">
     <columns>
-      <!-- column-name comment -->
+      <!-- column-name comment markup -->
       <column type="gchararray"/>
       <!-- column-name url -->
       <column type="gchararray"/>
       <!-- column-name authorDisplayName -->
+      <column type="gchararray"/>
+      <!-- column-name comment plain text -->
       <column type="gchararray"/>
     </columns>
   </object>
@@ -2698,7 +2700,6 @@ See &lt;https://dev.perl.org/licenses/&gt; for more information.
                             <property name="reorderable">True</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext6">
-                                <property name="editable">True</property>
                               </object>
                               <attributes>
                                 <attribute name="markup">0</attribute>

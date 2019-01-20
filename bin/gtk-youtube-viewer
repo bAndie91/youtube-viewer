@@ -3011,7 +3011,9 @@ sub comments_row_activated {
         }
     }
     else {
-		set_text($gui->get_object('comment_textview'), '@' . $feeds_liststore->get($iter, 2) . ', ');
+		set_text($gui->get_object('comment_textview'), 
+		 '@' . $feeds_liststore->get($iter, 2) . ', "' . $feeds_liststore->get($iter, 3) . '" – '
+		);
     }
 
     return 1;
@@ -3086,6 +3088,11 @@ sub display_comments {
                               $iter,
                               2,
                               $snippet->{authorDisplayName}
+                             );
+        $feeds_liststore->set(
+                              $iter,
+                              3,
+                              $snippet->{textDisplay} // ''
                              );
     }
 
